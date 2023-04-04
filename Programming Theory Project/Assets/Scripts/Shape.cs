@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Shape : MonoBehaviour
 {
-    public float movementSpeed;
+    [SerializeField]
+    private float movementSpeed = 3;
+
     private Vector3 m_CurrentDestination;
     private float m_xBoundary = 20;
     private float m_zBoundary = 15;
