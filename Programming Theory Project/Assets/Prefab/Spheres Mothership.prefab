@@ -729,7 +729,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -816,7 +816,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.5
+      value: 0.1
       mode: 0
       spread: 0
       speed:
@@ -4904,3 +4904,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887ef0496e71a4eb0b71a6b8a31fd12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectToSpawn: {fileID: 726394750390574031, guid: 4fffe10e7cde145fba7df4431d9e3faf, type: 3}

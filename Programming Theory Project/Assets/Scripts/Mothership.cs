@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Mothership : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject objectToSpawn;
+
     ParticleSystem particles;
     ParticleSystem.EmissionModule emission;
     Behaviour halo;
@@ -35,12 +38,28 @@ public class Mothership : MonoBehaviour
         SetHiglightEffects(false);
     }
 
+    private void OnMouseDown()
+    {
+        SpawnObject();
+    }
+
     private void SetHiglightEffects(bool enableEffects)
     {
         if (particles != null)
         {
             emission.enabled = enableEffects;
             halo.enabled = enableEffects;
+        }
+    }
+
+    private void SpawnObject()
+    {
+        if (objectToSpawn != null)
+        {
+            Vector3 spawnPosition = transform.position;
+            spawnPosition.y = 10;
+
+            Instantiate(objectToSpawn, spawnPosition, transform.rotation);
         }
     }
 }

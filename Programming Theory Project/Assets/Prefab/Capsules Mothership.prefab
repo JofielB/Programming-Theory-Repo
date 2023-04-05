@@ -4905,3 +4905,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887ef0496e71a4eb0b71a6b8a31fd12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectToSpawn: {fileID: 156420181384837988, guid: 1b23f2f8bf1b54199bf106ab1e413105, type: 3}

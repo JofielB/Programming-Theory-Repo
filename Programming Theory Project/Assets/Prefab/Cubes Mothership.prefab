@@ -729,7 +729,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 10
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -4904,3 +4904,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 887ef0496e71a4eb0b71a6b8a31fd12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectToSpawn: {fileID: 6505629554537228630, guid: ec0a88111a0484199859dc24a42b8996, type: 3}
