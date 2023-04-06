@@ -142,9 +142,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f86356d1952394cd7a323c1a1eafa847, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 3
-  force: 2
-  health: 4
+  m_Speed: 3
+  m_Force: 2
+  m_Health: 4
   enemies:
   - Cube
   - Sphere

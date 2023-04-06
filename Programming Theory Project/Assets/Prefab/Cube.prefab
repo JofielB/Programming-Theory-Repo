@@ -141,9 +141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5addf53b08bc74d4b82ab091add35e97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 2
-  force: 3
-  health: 4
+  m_Speed: 2
+  m_Force: 3
+  m_Health: 4
   enemies:
   - Sphere
   - Capsule

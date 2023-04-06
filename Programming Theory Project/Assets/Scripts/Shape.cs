@@ -5,11 +5,11 @@ using UnityEngine;
 public class Shape : MonoBehaviour
 {
     [SerializeField]
-    private float movementSpeed = 3;
+    private float m_Speed = 3;
     [SerializeField]
-    private float force = 1;
+    private float m_Force = 2;
     [SerializeField]
-    private float health = 2;
+    private float m_Health = 4;
     [SerializeField]
     private List<string> enemies = new List<string>();
     [SerializeField]
@@ -41,7 +41,7 @@ public class Shape : MonoBehaviour
 
     private void Move()
     {
-        transform.position += GetNextMovementDirection() * movementSpeed * Time.deltaTime;
+        transform.position += GetNextMovementDirection() * m_Speed * Time.deltaTime;
     }
 
     private Vector3 GetNextMovementDirection()
@@ -73,10 +73,21 @@ public class Shape : MonoBehaviour
         {
             Shape collisionShape = collisionObject.GetComponent<Shape>();
 
-            collisionShape.PushBack(force);
-            collisionShape.Hit(force);
-            if (collisionShape.health <= 0)
-                health++;
+            collisionShape.PushBack(m_Force);
+            collisionShape.Hit(m_Force);
+            if (collisionShape.m_Health <= 0)
+                m_Health++;
+        }
+        else if (IsAnAlly(collisionObject) &&
+            CanWeFuse(collisionObject))
+        {
+            Shape collisionShape = collisionObject.GetComponent<Shape>();
+
+            if (collisionShape.m_Health > m_Health)
+            {
+                collisionShape.IncreaseStats(m_Speed/5, m_Force/4, m_Health/2, transform.localScale.x);
+                DestroyShape();
+            }
         }
     }
 
@@ -87,12 +98,12 @@ public class Shape : MonoBehaviour
 
     private void Hit(float hitForce)
     {
-        health -= hitForce;
+        m_Health -= hitForce;
     }
 
     private void CheckHealth()
     {
-        if (health <= 0)
+        if (m_Health <= 0)
             DestroyShape();
     }
 
@@ -102,9 +113,9 @@ public class Shape : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private bool IsAnEnemy(GameObject gameObject)
+    private bool IsAnEnemy(GameObject objectiveGameObject)
     {
-        return enemies.Contains(gameObject.tag);
+        return enemies.Contains(objectiveGameObject.tag);
     }
 
     private void CreateExplosion()
@@ -122,14 +133,20 @@ public class Shape : MonoBehaviour
         if (IsAnEnemy(triggerObject) &&
             CanIKillIt(triggerObject))
         {
-            Debug.Log("Kill");
+            Debug.Log("KILL");
+            ChangeDestination(triggerObject.transform.position);
+        }
+        else if (IsAnAlly(triggerObject) &&
+            CanWeFuse(triggerObject))
+        {
+            Debug.Log("FUSE");
             ChangeDestination(triggerObject.transform.position);
         }
         else if (IsAnEnemy(triggerObject) &&
             CouldIDie(triggerObject))
-        { 
+        {
             Debug.Log("RUN");
-            
+
             Vector3 directionAwayFromThreat = (triggerObject.transform.position - transform.position).normalized;
             Vector3 directionWithMagnitud = directionAwayFromThreat * 10 * -1;
             directionWithMagnitud.y = 1;
@@ -137,26 +154,54 @@ public class Shape : MonoBehaviour
         }
     }
 
-    private bool CanIKillIt(GameObject gameObject)
+    private bool CanIKillIt(GameObject objectiveGameObject)
     {
-        var otherHealth = gameObject.GetComponent<Shape>().health;
-        return otherHealth - force <= 0;
+        var otherHealth = objectiveGameObject.GetComponent<Shape>().m_Health;
+        return otherHealth - m_Force <= 0;
     }
 
-    private bool IsCloserThanCurrentDestination(GameObject gameObject)
+    private bool IsCloserThanCurrentDestination(GameObject objectiveGameObject)
     {
-        return Vector3.Distance(transform.position, gameObject.transform.position) <
+        return Vector3.Distance(transform.position, objectiveGameObject.transform.position) <
             Vector3.Distance(transform.position, m_CurrentDestination);
     }
 
-    private bool CouldIDie(GameObject gameObject)
+    private bool CouldIDie(GameObject objectiveGameObject)
     {
-        var otherForce = gameObject.GetComponent<Shape>().force;
-        return health - otherForce <= 0;
+        var otherForce = objectiveGameObject.GetComponent<Shape>().m_Force;
+        return m_Health - otherForce <= 0;
     }
 
     private void ChangeDestination(Vector3 destination)
     {
         m_CurrentDestination = destination;
+    }
+
+    private bool IsAnAlly(GameObject objectiveGameObject)
+    {
+        return objectiveGameObject.tag.Equals(gameObject.tag);
+    }
+
+    private bool CanWeFuse(GameObject objectiveGameObject)
+    {
+        var otherHealth = objectiveGameObject.GetComponent<Shape>().m_Health;
+        return otherHealth != m_Health;
+    }
+
+    private void IncreaseStats(float speed, float force, float health, float xScale)
+    {
+        m_Speed += speed;
+        m_Force += force;
+        m_Health += health;
+        if (xScale > transform.localScale.x)
+        {
+            var scale = xScale + .2f;
+            transform.localScale = new Vector3(scale, scale, scale);
+        }
+        else
+        {
+            transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
+        }
+        
     }
 }
