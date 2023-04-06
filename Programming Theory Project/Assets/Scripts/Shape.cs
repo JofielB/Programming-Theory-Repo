@@ -36,6 +36,7 @@ public class Shape : MonoBehaviour
             GenerateRandonDestination();
 
         CheckHealth();
+        Debug.DrawLine(transform.position, m_CurrentDestination);
     }
 
     private void Move()
@@ -50,16 +51,18 @@ public class Shape : MonoBehaviour
 
     private bool HasReachDestination()
     {
-        return Vector3.Distance(transform.position, m_CurrentDestination) <= 1.0f;
+        return Vector3.Distance(transform.position, m_CurrentDestination) <= 1.5f;
     }
 
     private void GenerateRandonDestination()
     {
-        m_CurrentDestination = new Vector3(
+        Vector3 randonDestination = new Vector3(
             Random.Range(-m_XBoundary, m_XBoundary),
-            0,
+            1,
             Random.Range(-m_ZBoundary, m_ZBoundary)
         );
+
+        ChangeDestination(randonDestination);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -117,10 +120,20 @@ public class Shape : MonoBehaviour
         GameObject triggerObject = other.gameObject;
 
         if (IsAnEnemy(triggerObject) &&
-            CanIKillIt(triggerObject) &&
-            IsCloserThanCurrentDestination(triggerObject))
+            CanIKillIt(triggerObject))
         {
-            m_CurrentDestination = triggerObject.transform.position;
+            Debug.Log("Kill");
+            ChangeDestination(triggerObject.transform.position);
+        }
+        else if (IsAnEnemy(triggerObject) &&
+            CouldIDie(triggerObject))
+        { 
+            Debug.Log("RUN");
+            
+            Vector3 directionAwayFromThreat = (triggerObject.transform.position - transform.position).normalized;
+            Vector3 directionWithMagnitud = directionAwayFromThreat * 10 * -1;
+            directionWithMagnitud.y = 1;
+            ChangeDestination(directionWithMagnitud);
         }
     }
 
@@ -134,5 +147,16 @@ public class Shape : MonoBehaviour
     {
         return Vector3.Distance(transform.position, gameObject.transform.position) <
             Vector3.Distance(transform.position, m_CurrentDestination);
+    }
+
+    private bool CouldIDie(GameObject gameObject)
+    {
+        var otherForce = gameObject.GetComponent<Shape>().force;
+        return health - otherForce <= 0;
+    }
+
+    private void ChangeDestination(Vector3 destination)
+    {
+        m_CurrentDestination = destination;
     }
 }
