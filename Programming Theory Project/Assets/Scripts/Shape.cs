@@ -5,12 +5,6 @@ using UnityEngine;
 public class Shape : MonoBehaviour
 {
     [SerializeField]
-    private float m_Speed = 3;
-    [SerializeField]
-    private float m_Force = 2;
-    [SerializeField]
-    private float m_Health = 4;
-    [SerializeField]
     private List<string> enemies = new List<string>();
     [SerializeField]
     GameObject explosionEffect;
@@ -19,10 +13,14 @@ public class Shape : MonoBehaviour
     private Vector3 m_CurrentDestination;
     private float m_XBoundary = 20;
     private float m_ZBoundary = 15;
+    protected float m_Speed { get; set; }
+    protected float m_Force { get; set; }
+    protected float m_Health { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
+        SetParameters();
         GenerateRandonDestination();
         m_RigidBoidy = GetComponent<Rigidbody>();
     }
@@ -203,5 +201,12 @@ public class Shape : MonoBehaviour
             transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
         }
         
+    }
+
+    protected virtual void SetParameters()
+    {
+        m_Speed = 3;
+        m_Force = 2;
+        m_Health = 4;
     }
 }

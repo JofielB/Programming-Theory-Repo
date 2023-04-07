@@ -353,6 +353,7 @@
 -r:"Library/Bee/artifacts/200b0aE.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Capsule.cs"
 "Assets/Scripts/Cube.cs"
+"Assets/Scripts/MainMenuButtonManager.cs"
 "Assets/Scripts/Mothership.cs"
 "Assets/Scripts/Shape.cs"
 "Assets/Scripts/Sphere.cs"
